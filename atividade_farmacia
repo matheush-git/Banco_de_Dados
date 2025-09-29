@@ -1,0 +1,54 @@
+CREATE DATABASE db_farmacia_bem_estar;
+USE db_farmacia_bem_estar;
+CREATE TABLE tb_categorias (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nome_categoria VARCHAR(50) NOT NULL,
+    descricao VARCHAR(100)
+);
+CREATE TABLE tb_produtos (
+    id_produto INT AUTO_INCREMENT PRIMARY KEY,
+    nome_produto VARCHAR(50) NOT NULL,
+    quantidade INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    descricao VARCHAR(100),
+    id_categoria INT,
+    FOREIGN KEY (id_categoria) REFERENCES tb_categorias(id_categoria)
+);
+INSERT INTO tb_categorias (nome_categoria, descricao)
+VALUES
+('Medicamentos', 'Produtos para tratamento de doenças'),
+('Cosméticos', 'Produtos de beleza e higiene'),
+('Suplementos', 'Vitaminas e suplementos alimentares'),
+('Higiene', 'Produtos de limpeza e cuidados pessoais'),
+('Equipamentos', 'Aparelhos e utensílios de saúde');
+
+INSERT INTO tb_produtos (nome_produto, quantidade, preco, descricao, id_categoria)
+VALUES
+('Paracetamol', 100, 25.00, 'Analgésico e antitérmico', 1),
+('Creme Hidratante', 50, 60.00, 'Hidratação da pele', 2),
+('Vitamin C', 80, 45.00, 'Suplemento vitamínico', 3),
+('Shampoo Anticaspa', 40, 30.00, 'Limpeza e cuidado capilar', 2),
+('Máscara Facial', 30, 55.00, 'Cuidados com o rosto', 2),
+('Termômetro Digital', 20, 80.00, 'Medidor de temperatura corporal', 5),
+('Multivitamínico', 60, 50.00, 'Suplemento diário', 3),
+('Sabonete Líquido', 70, 15.00, 'Higiene pessoal', 4);
+
+SELECT * FROM tb_produtos
+WHERE preco > 50.00;
+
+SELECT * FROM tb_produtos
+WHERE preco BETWEEN 5.00 AND 60.00;
+
+SELECT * FROM tb_produtos
+WHERE nome_produto LIKE '%C%';
+
+SELECT p.id_produto, p.nome_produto, p.quantidade, p.preco, p.descricao,
+       c.nome_categoria, c.descricao
+FROM tb_produtos p
+INNER JOIN tb_categorias c ON p.id_categoria = c.id_categoria;
+
+SELECT p.id_produto, p.nome_produto, p.quantidade, p.preco, p.descricao,
+       c.nome_categoria, c.descricao
+FROM tb_produtos p
+INNER JOIN tb_categorias c ON p.id_categoria = c.id_categoria
+WHERE c.nome_categoria = 'Cosméticos';
