@@ -1,0 +1,56 @@
+CREATE DATABASE db_cidade_dos_vegetais;
+USE db_cidade_dos_vegetais;
+
+CREATE TABLE tb_categorias (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nome_categoria VARCHAR(50) NOT NULL,
+    descricao VARCHAR(100)
+);
+
+CREATE TABLE tb_produtos (
+    id_produto INT AUTO_INCREMENT PRIMARY KEY,
+    nome_produto VARCHAR(50) NOT NULL,
+    quantidade INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    origem VARCHAR(50),
+    id_categoria INT,
+    FOREIGN KEY (id_categoria) REFERENCES tb_categorias(id_categoria)
+);
+INSERT INTO tb_categorias (nome_categoria, descricao)
+VALUES
+('Frutas', 'Frutas frescas e saudáveis'),
+('Verduras', 'Verduras e legumes'),
+('Hortaliças', 'Hortaliças para saladas e preparo'),
+('Temperos', 'Ervas e temperos naturais'),
+('Sementes', 'Sementes e grãos');
+
+INSERT INTO tb_produtos (nome_produto, quantidade, preco, origem, id_categoria)
+VALUES
+('Maçã', 50, 60.00, 'Brasil', 1),
+('Banana', 100, 45.00, 'Brasil', 1),
+('Alface', 40, 20.00, 'Fazenda Local', 2),
+('Tomate', 60, 55.00, 'Fazenda Local', 3),
+('Cenoura', 70, 50.00, 'Fazenda Local', 3),
+('Salsinha', 30, 15.00, 'Fazenda Local', 4),
+('Abacaxi', 25, 70.00, 'Brasil', 1),
+('Chia', 20, 80.00, 'Brasil', 5);
+
+SELECT * FROM tb_produtos
+WHERE preco > 50.00;
+
+SELECT * FROM tb_produtos
+WHERE preco BETWEEN 50.00 AND 150.00;
+
+SELECT * FROM tb_produtos
+WHERE nome_produto LIKE '%C%';
+
+SELECT p.id_produto, p.nome_produto, p.quantidade, p.preco, p.origem,
+       c.nome_categoria, c.descricao
+FROM tb_produtos p
+INNER JOIN tb_categorias c ON p.id_categoria = c.id_categoria;
+
+SELECT p.id_produto, p.nome_produto, p.quantidade, p.preco, p.origem,
+       c.nome_categoria, c.descricao
+FROM tb_produtos p
+INNER JOIN tb_categorias c ON p.id_categoria = c.id_categoria
+WHERE c.nome_categoria = 'Frutas';
